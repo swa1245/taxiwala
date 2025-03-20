@@ -119,4 +119,55 @@ Clears the authentication token from cookies and blacklists it.
 ### Error Responses
 - **Status Code:** 401 Unauthorized – When the authentication token is missing or invalid.
 
+## POST /captain/register
+
+### Description
+Registers a new captain by accepting a JSON payload with the following fields:
+- **fullname**: object containing:
+  - **firstname**: string (min length: 3, required)
+  - **lastname**: string (min length: 3, required)
+- **email**: string (valid email, required)
+- **password**: string (min length: 8, required)
+- **vehicle**: object containing:
+  - **color**: string (required)
+  - **plate**: string (required)
+  - **capacity**: number (required)
+  - **type**: string (must be one of "motorcycle", "car", "auto")
+
+The endpoint creates a new captain with hashed password and returns an authentication token.
+
+### Request Body
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "securePassword123",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "type": "car"
+  }
+}
+```
+
+### Success Response
+- **Status Code:** 201 Created
+- **Body:**
+```json
+{
+  "Captain": {
+    // ...captain details...
+  },
+  "token": "jwt_token_here"
+}
+```
+
+### Error Responses
+- **Status Code:** 400 Bad Request – if validation fails or if the captain already exists.
+- **Status Code:** 500 Internal Server Error – for unexpected errors.
+
 <!-- ...other documentation... -->
