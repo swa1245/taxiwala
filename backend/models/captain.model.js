@@ -83,10 +83,10 @@ captainSchema.methods.generateAuthToken = function () {
   );
   return token;
 };
-captainSchema.comparePassword = async function (password) {
+captainSchema.methods.comparePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
-captainSchema.hashPassword = async function (password) {
+captainSchema.methods.hashPassword = async function (password) {
   return await bcrypt.hash(password, 10);
 };
 
