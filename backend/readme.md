@@ -170,4 +170,77 @@ The endpoint creates a new captain with hashed password and returns an authentic
 - **Status Code:** 400 Bad Request – if validation fails or if the captain already exists.
 - **Status Code:** 500 Internal Server Error – for unexpected errors.
 
+## POST /captain/login
+
+### Description
+Logs in an existing captain by accepting a JSON payload with:
+- **email**: string (valid email, required)
+- **password**: string (min length: 8, required)
+
+Authenticates the captain and returns an authentication token along with captain details.
+
+### Request Body
+```json
+{
+  "email": "jane.doe@example.com",
+  "password": "securePassword123"
+}
+```
+
+### Success Response
+- **Status Code:** 200 OK
+- **Body:**
+```json
+{
+  "success": true,
+  "captain": {
+    // ...captain details, password excluded...
+  },
+  "token": "jwt_token_here"
+}
+```
+
+### Error Responses
+- **Status Code:** 400 Bad Request – When validation fails.
+- **Status Code:** 401 Unauthorized – When credentials are invalid.
+- **Status Code:** 500 Internal Server Error – For unexpected errors.
+
+## GET /captain/profile
+
+### Description
+A protected route that returns the logged-in captain's profile. Requires a valid authentication token.
+
+### Success Response
+- **Status Code:** 200 OK
+- **Body:**
+```json
+{
+  "success": true,
+  "captain": {
+    // ...captain details...
+  }
+}
+```
+
+### Error Responses
+- **Status Code:** 401 Unauthorized – When the authentication token is missing or invalid.
+
+## GET /capatin/logout
+
+### Description
+Logs out the captain by clearing the authentication token from cookies and blacklisting the token.
+
+### Success Response
+- **Status Code:** 200 OK
+- **Body:**
+```json
+{
+  "success": true,
+  "message": "Logout successfully"
+}
+```
+
+### Error Responses
+- **Status Code:** 401 Unauthorized – When the authentication token is missing or invalid.
+
 <!-- ...other documentation... -->
