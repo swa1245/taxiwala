@@ -26,7 +26,7 @@ const CaptainSignup = () => {
         </h2>
         <form onSubmit={submitHandler}>
           <h3 className="text-base mb-2 font-medium capitalize">
-            What's your name?
+            What's our capatin's name?
           </h3>
           <div className="flex justify-between items-center gap-3 mb-5">
             <input
