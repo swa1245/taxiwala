@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import UserProtectedWrapper from "./pages/UserProtectedWrapper";
 import UserLogout from "./pages/UserLogout";
 import CaptainHome from "./pages/CaptainHome";
+import CaptainProtected from "./pages/CaptainProtected";
 
 const App = () => {
   const a = useContext(UserDataContext);
@@ -33,9 +34,9 @@ const App = () => {
         <Route path='/user/logout' element={<UserProtectedWrapper>
           <UserLogout />
         </UserProtectedWrapper>} />
-        <Route path='/captain-home' element={<UserProtectedWrapper>
+        <Route path='/captain-home' element={<CaptainProtected>
           <CaptainHome/>
-        </UserProtectedWrapper>}/>
+        </CaptainProtected>}/>
       </Routes>
     </div>
   );
