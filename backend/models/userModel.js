@@ -7,33 +7,45 @@ const userSchema = new mongoose.Schema({
     firstname: {
       type: String,
       required: true,
+      trim: true,
       minlength: 3,
       maxlength: 50,
     },
     lastname: {
       type: String,
-      minlength: 3,
+      trim: true,
+      minlength: 0,
       maxlength: 50,
+      default: "",
     },
   },
   email: {
     type: String,
-    required: true,
+    // required: true,
     unique: true,
+    trim: true,
+    lowercase: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email'],
     minlength: 3,
     maxlength: 50,
+    index: true // Ensure proper indexing
   },
   password: {
     type: String,
     required: true,
     minlength: 8,
-    maxlength: 1024,  
+    maxlength: 1024,
     select: false,
   },
   socketId: {
     type: String,
   },
+}, {
+  timestamps: true
 });
+
+// Add compound index for email to ensure uniqueness
+userSchema.index({ email: 1 }, { unique: true });
 
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
@@ -41,7 +53,7 @@ userSchema.methods.generateAuthToken = function () {
       _id: this._id,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "24h" } // added token expiration time
+    { expiresIn: '7d' }
   );
   return token;
 };
@@ -51,7 +63,8 @@ userSchema.methods.comparePassword = async function (password) {
 };
 
 userSchema.statics.hashPassword = async function (password) {
-  return await bcrypt.hash(password, 10);
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
 };
 
 module.exports = mongoose.model("user", userSchema);

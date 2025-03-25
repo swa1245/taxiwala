@@ -1,15 +1,34 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { UserDataContext } from "../context/UserContext";
+import axios from "axios";
 
 const UserLogin = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [userData, setUserData] = useState();
-  const aybmithandler = (e) => {
+
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserDataContext);
+  const aybmithandler = async (e) => {
     e.preventDefault();
     // console.log(email, password);
-    setUserData({ email, password });
-    console.log(userData);
+    // setUserData({ email, password });
+    // console.log(userData);
+    const userData = {
+      email,
+      password,
+    };
+    const res = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/user/login`,
+      userData
+    );
+    if (res.status == 201) {
+      const data = res.data;
+      setUser(data.user);
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard");
+    }
     setEmail("");
     setPassword("");
   };
@@ -63,7 +82,10 @@ const UserLogin = () => {
         </p>
       </div>
       <div>
-        <Link to='/captain-login' className="bg-[#ff1010] flex items-center justify-center text-white font-semibold tracking-wide rounded w-full py-2 transition duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500">
+        <Link
+          to="/captain-login"
+          className="bg-[#ff1010] flex items-center justify-center text-white font-semibold tracking-wide rounded w-full py-2 transition duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+        >
           Sign in as Captain
         </Link>
       </div>
