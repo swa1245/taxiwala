@@ -79,7 +79,7 @@ const Dashboard = () => {
             />
           </form>
         </div>
-        <div ref={panelref} className=" bg-amber-500  h-0">
+        <div ref={panelref} className=" bg-amber-50  h-0">
           <LocationSearchPnel />
         </div>
       </div>
