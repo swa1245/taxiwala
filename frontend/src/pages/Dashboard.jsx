@@ -32,7 +32,7 @@ const Dashboard = () => {
     [panel]
   );
   return (
-    <div className="h-screen w-screen relative">
+    <div className="h-screen w-screen relative overflow-hidden">
       <h2 className="w-14 absolute ml-8 text-2xl font-bold  text-black">
         TaxiWala
       </h2>
@@ -82,6 +82,18 @@ const Dashboard = () => {
         <div ref={panelref} className=" bg-amber-50  h-0">
           <LocationSearchPnel />
         </div>
+      </div>
+      <div className="fixed z-10 bg-white bottom-0 p-3">
+            <div className="flex border-2 border-gray-700 rounded-lg w-full p-3 items-center justify-between">
+              <img className="h-12" src="https://www.pngplay.com/wp-content/uploads/8/Uber-PNG-Photos.png" alt="" />
+              <div className="w-1/2">
+                <h4 className="font-medium text-lg ">uber1 <span>user icon</span><span>4</span></h4>
+                <h5 className="font-medium text-xs ">2mins away</h5>
+                <p className="font-medium text-xs ">affordable compact rides</p>
+              </div>
+              <h2  className="text-2xl font-semibold">rs193</h2>
+            </div>
+            
       </div>
     </div>
   );
