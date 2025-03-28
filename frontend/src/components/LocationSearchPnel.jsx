@@ -11,7 +11,11 @@ const LocationSearchPnel = ({vechilePanel,setVechiclepanel}) => {
     <div>
       {sampleData.map((items, index) => {
         return (
-          <div className="flex items-center active:border-2 p-3 rounded-xl  gap-1 my-2 justify-start">
+          <div onClick={
+            () => {
+              setVechiclepanel(!vechilePanel);
+            }
+          } className="flex items-center active:border-2 p-3 rounded-xl  gap-1 my-2 justify-start">
             <h2 className=" h-10 w-20 flex items-center justify-center">
               <i className="ri-map-pin-line text-base"></i>
             </h2>
