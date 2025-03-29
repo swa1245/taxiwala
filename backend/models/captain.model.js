@@ -39,7 +39,7 @@ const captainSchema = new mongoose.Schema({
     default: "inactive",
     enum: ["active", "inactive"],
   },
-  vechile: {
+  vehicle: {
     color: {
       type: String,
       required: true,
@@ -56,6 +56,7 @@ const captainSchema = new mongoose.Schema({
       type: Number,
       required: true,
       min: 1,
+      max: 10,
     },
     type: {
       type: String,
@@ -71,22 +72,27 @@ const captainSchema = new mongoose.Schema({
       type: Number,
     },
   },
+}, {
+  timestamps: true,
 });
 
-captainSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign(
-    {
-      _id: this._id,
+captainSchema.methods.generateAuthToken = function() {
+  return jwt.sign(
+    { 
+      id: this._id,
+      email: this.email,
+      role: 'captain'
     },
-    process.env.JWT_SECRET,
-    { expiresIn: "24h" }
+    process.env.JWT_SECRET || 'taxiwala-secret-key',
+    { expiresIn: '24h' }
   );
-  return token;
 };
-captainSchema.methods.comparePassword = async function (password) {
+
+captainSchema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
-captainSchema.methods.hashPassword = async function (password) {
+
+captainSchema.methods.hashPassword = async function(password) {
   return await bcrypt.hash(password, 10);
 };
 

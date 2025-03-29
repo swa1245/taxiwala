@@ -1,18 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { body } = require("express-validator");
-const capatinController = require("../controllers/capatin.conrioller");
+const captainController = require("../controllers/captain.controller");
 const { authCaptain } = require("../middlewares/auth.middleware");
 
 router.post(
   "/register",
   [
-    body("fullname.firstname")
+    body("firstname")
       .isLength({ min: 3 })
       .withMessage("First name must be at least 3 characters long"),
-    body("fullname.lastname")
-      .isLength({ min: 3 })
-      .withMessage("Last name must be at least 3 characters long"),
     body("email").isEmail().withMessage("Please enter a valid email"),
     body("password")
       .isLength({ min: 8 })
@@ -30,8 +27,9 @@ router.post(
       .isIn(["motorcycle", "car", "auto"])
       .withMessage("Vehicle type must be motorcycle, car, or auto"),
   ],
-  capatinController.registerCapatin
+  captainController.registerCaptain
 );
+
 router.post(
   "/login",
   [
@@ -40,9 +38,10 @@ router.post(
       .isLength({ min: 8 })
       .withMessage("Password must be at least 8 characters long"),
   ],
-  capatinController.loginCapatin
+  captainController.loginCaptain
 );
 
-router.get("/profile", authCaptain, capatinController.getCapatinProfile);
-router.get("/logout", authCaptain, capatinController.logoutCapatin);
+router.get("/profile", authCaptain, captainController.getCaptainProfile);
+router.get("/logout", authCaptain, captainController.logoutCaptain);
+
 module.exports = router;

@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
-import { data, Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../utils/axios";
 import { UserDataContext } from "../context/UserContext";
-
-const BACKEND_URL = "http://localhost:6000"; // Define backend URL explicitly
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
@@ -29,48 +27,20 @@ const UserSignup = () => {
         password,
       };
 
-      console.log("Sending request to:", `${BACKEND_URL}/user/register`);
-      console.log("With data:", newUser);
+      const res = await axiosInstance.post('/user/register', newUser);
 
-      const res = await axios.post(`${BACKEND_URL}/user/register`, newUser, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-
-      console.log("Response received:", res.data);
-
-      if (res.data.success && res.data.user) {
-        // Save token if provided
-        if (res.data.token) {
-          localStorage.setItem('token', res.data.token);
-        }
+      if (res.data.token) {
+        localStorage.setItem('token', res.data.token);
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+      }
         
-        // Update user context
+      if (res.data.user) {
         setUser(res.data.user);
-        localStorage.setItem('user', data.token);
         navigate("/dashboard");
-
-
-        // Clear form
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        
-        // Navigate to dashboard
-        
-      } else {
-        setError(res.data.error || "Registration failed");
       }
     } catch (err) {
-      console.error("Signup error:", err);
-      setError(
-        err.response?.data?.error || 
-        err.message || 
-        "Registration failed. Please try again."
-      );
+      console.error("Registration error:", err);
+      setError(err.response?.data?.error || "Registration failed. Please try again.");
     } finally {
       setLoading(false);
     }

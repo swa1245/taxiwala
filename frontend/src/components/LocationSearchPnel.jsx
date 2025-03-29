@@ -1,6 +1,6 @@
 import React from "react";
 
-const LocationSearchPnel = ({vechilePanel,setVechiclepanel}) => {
+const LocationSearchPnel = ({vechilePanel,setVechiclepanel,panel,setPanel}) => {
   const sampleData = [
     "24B, nears kappors cafe",
     "23B, nears kappors cafe",
@@ -14,6 +14,7 @@ const LocationSearchPnel = ({vechilePanel,setVechiclepanel}) => {
           <div onClick={
             () => {
               setVechiclepanel(!vechilePanel);
+              setPanel(!panel);
             }
           } className="flex items-center active:border-2 p-3 rounded-xl  gap-1 my-2 justify-start">
             <h2 className=" h-10 w-20 flex items-center justify-center">

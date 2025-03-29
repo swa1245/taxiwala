@@ -6,13 +6,33 @@ const app = express();
 const connectDb = require("./db/db");
 const userRoutes = require("./routes/user.routes");
 const cookieparser = require("cookie-parser");
-const captain = require("./routes/capatin.routes");
+const captainRoutes = require("./routes/captain.routes");
 
 // Connect to database
 connectDb();
 
 // Enable CORS for all routes
-app.use(cors());
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    // Check if the origin matches our allowed patterns
+    const allowedOrigins = [
+      /^http:\/\/localhost:\d+$/,
+      /^http:\/\/127\.0\.0\.1:\d+$/
+    ];
+    
+    if (allowedOrigins.some(pattern => pattern.test(origin))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -32,7 +52,7 @@ app.get("/health", (req, res) => {
 
 // Routes
 app.use("/user", userRoutes);
-app.use("/captain", captain);
+app.use("/captain", captainRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -43,10 +63,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error("Error:", err);
   res.status(err.status || 500).json({
-    error:
-      process.env.NODE_ENV === "development"
-        ? err.message
-        : "Internal server error",
+    error: process.env.NODE_ENV === "development" ? err.message : "Internal server error",
   });
 });
 
