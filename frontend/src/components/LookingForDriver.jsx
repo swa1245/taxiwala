@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react'
 
-const ConfirmedVechile = ({ setVechiclepanel, setVechicleFound }) => {
+const LookingForDriver = ({setVechiclepanel}) => {
   return (
     <div>
       <h5 onClick={() => setVechiclepanel(false)} className="mb-4">
         <span className="text-sm font-semibold">leave now</span>{" "}
         <i className="ri-arrow-down-fill text-sm"></i>
       </h5>
-      <h2 className="text-xl font-semibold mb-3">confirm ur ride</h2>
+      <h2 className="text-xl font-semibold mb-3">Looking for driver</h2>
       <div className="flex gap-3 flex-col justify-between items-center">
         <img
           className="h-20 "
@@ -38,18 +38,10 @@ const ConfirmedVechile = ({ setVechiclepanel, setVechicleFound }) => {
           </div>
         </div>
         <div></div>
-        <button
-          onClick={() => {
-            setVechicleFound(true);
-            setVechiclepanel(false);
-          }}
-          className="w-full bg-green-600 rounded-lg mt-4 text-white font-semibold p-2"
-        >
-          confirm
-        </button>
+        
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ConfirmedVechile;
+export default LookingForDriver

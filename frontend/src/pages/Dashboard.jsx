@@ -4,6 +4,7 @@ import gsap from "gsap";
 import LocationSearchPnel from "../components/LocationSearchPnel";
 import VechilcePanel from "../components/VechilcePanel";
 import ConfirmedVechile from "../components/ConfirmedVechile";
+import LookingForDriver from "../components/LookingForDriver";
 
 const Dashboard = () => {
   const [pick, setpick] = useState("");
@@ -13,7 +14,9 @@ const Dashboard = () => {
   const panelarrow = useRef(null);
   const [vechilePanel, setVechiclepanel] = useState(false);
   const [confirmvechilePanel, setconfirmVechiclepanel] = useState(false);
+  const [VechileFound, setVechicleFound] = useState(false);
   const vechilcepanel = useRef(null);
+  const vechilceFoundpanel = useRef(null);
   const confrinmvechilcepanel = useRef(null);
 
   useGSAP(
@@ -63,6 +66,20 @@ const Dashboard = () => {
       }
     },
     [confirmvechilePanel]
+  )
+  useGSAP(
+    function () {
+      if (VechileFound) {
+        gsap.to(vechilceFoundpanel.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(vechilceFoundpanel.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [VechileFound]
   )
   return (
     <div className="h-screen w-screen relative overflow-hidden">
@@ -129,9 +146,15 @@ const Dashboard = () => {
       </div>
       <div
         ref={confrinmvechilcepanel}
-        className="fixed z-10 w-full bg-white bottom-0 px-3 py-8 translate-y-full "
+        className="fixed z-10 w-full bg-white bottom-0 px-3 py-6 pt-12 translate-y-full "
       >
-       <ConfirmedVechile setconfirmVechiclepanel={setconfirmVechiclepanel}/>
+       <ConfirmedVechile setVechicleFound={setVechicleFound} setconfirmVechiclepanel={setconfirmVechiclepanel}/>
+      </div>
+      <div
+      ref={vechilceFoundpanel}
+        className="fixed z-10 w-full bg-white bottom-0 px-3 py-6 pt-12 translate-y-full "
+      >
+       <LookingForDriver />
       </div>
     </div>
   );
