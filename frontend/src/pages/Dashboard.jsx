@@ -5,6 +5,7 @@ import LocationSearchPnel from "../components/LocationSearchPnel";
 import VechilcePanel from "../components/VechilcePanel";
 import ConfirmedVechile from "../components/ConfirmedVechile";
 import LookingForDriver from "../components/LookingForDriver";
+import WaitForDriver from "../components/WaitForDriver";
 
 const Dashboard = () => {
   const [pick, setpick] = useState("");
@@ -15,9 +16,11 @@ const Dashboard = () => {
   const [vechilePanel, setVechiclepanel] = useState(false);
   const [confirmvechilePanel, setconfirmVechiclepanel] = useState(false);
   const [VechileFound, setVechicleFound] = useState(false);
+  const [waitingVechile, setWaitingVechile] = useState(false);
   const vechilcepanel = useRef(null);
   const vechilceFoundpanel = useRef(null);
   const confrinmvechilcepanel = useRef(null);
+  const waitingvechilcepanel = useRef(null);
 
   useGSAP(
     function () {
@@ -66,7 +69,7 @@ const Dashboard = () => {
       }
     },
     [confirmvechilePanel]
-  )
+  );
   useGSAP(
     function () {
       if (VechileFound) {
@@ -80,7 +83,21 @@ const Dashboard = () => {
       }
     },
     [VechileFound]
-  )
+  );
+  useGSAP(
+    function () {
+      if (waitingVechile) {
+        gsap.to(waitingvechilcepanel.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(waitingvechilcepanel.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [waitingVechile]
+  );
   return (
     <div className="h-screen w-screen relative overflow-hidden">
       <h2 className="w-14 absolute ml-8 text-2xl font-bold  text-black">
@@ -142,19 +159,32 @@ const Dashboard = () => {
         ref={vechilcepanel}
         className="fixed z-10 w-full bg-white bottom-0 px-3 py-8 translate-y-full "
       >
-       <VechilcePanel setconfirmVechiclepanel={setconfirmVechiclepanel} setVechiclepanel={setVechiclepanel}/>
+        <VechilcePanel
+          setconfirmVechiclepanel={setconfirmVechiclepanel}
+          setVechiclepanel={setVechiclepanel}
+        />
       </div>
       <div
         ref={confrinmvechilcepanel}
         className="fixed z-10 w-full bg-white bottom-0 px-3 py-6 pt-12 translate-y-full "
       >
-       <ConfirmedVechile setVechicleFound={setVechicleFound} setconfirmVechiclepanel={setconfirmVechiclepanel}/>
+        <ConfirmedVechile
+          setVechicleFound={setVechicleFound}
+          setconfirmVechiclepanel={setconfirmVechiclepanel}
+        />
       </div>
       <div
-      ref={vechilceFoundpanel}
+        ref={vechilceFoundpanel}
         className="fixed z-10 w-full bg-white bottom-0 px-3 py-6 pt-12 translate-y-full "
       >
-       <LookingForDriver />
+        <LookingForDriver />
+      </div>
+      <div
+        ref={waitingvechilcepanel}
+        waitingVechile={waitingVechile}
+        className="fixed z-10 w-full bg-white bottom-0 px-3 py-6 pt-12 "
+      >
+        <WaitForDriver />
       </div>
     </div>
   );
