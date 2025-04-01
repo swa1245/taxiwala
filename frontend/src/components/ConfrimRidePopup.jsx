@@ -1,16 +1,13 @@
 import React from "react";
 
-const RidePopUp = ({
-  setVechicleFound,
-  setVechiclepanel,
-  setRidepopuppanel,
-}) => {
+const ConfrimRidePopup = ({ setVechiclepanel, setRidepopuppanel,setConfrimRideuppanel}) => {
   return (
     <div>
       <h5
         onClick={() => {
           setVechiclepanel(false);
           setRidepopuppanel(false);
+          setConfrimRideuppanel(false);
         }}
         className="mb-4"
       >
@@ -61,11 +58,12 @@ const RidePopUp = ({
           }}
           className="w-full bg-green-600 rounded-lg mt-4 text-white font-semibold p-2"
         >
-          confirm
+          Except
         </button>
         <button
           onClick={() => {
             setRidepopuppanel(false);
+            setConfrimRideuppanel(false);
           }}
           className="w-full bg-gray-300 rounded-lg mt-1 text-gray-700 font-semibold p-2"
         >
@@ -76,4 +74,4 @@ const RidePopUp = ({
   );
 };
 
-export default RidePopUp;
+export default ConfrimRidePopup;
